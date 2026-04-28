@@ -5,7 +5,7 @@ import (
 )
 
 type User struct{
-	ID int `json:"id_usuario"` // campo id 
+	ID_usuario int `json:"id_usuario"` // campo id 
 	Nombre string `json:"nombre"`
 	Apellido string `json:"apellido"`
 	Numero_documento int `json:"numero_documento"`

@@ -5,7 +5,7 @@ import (
 )
 
 type Documento struct{
-	ID int `json:"id_documento"`
+	ID_documento int `json:"id_documento"`
 	Tipo_documento string `json:"tipo_documento"`
 	Activo bool `json:"activo"`
 	Fecha_creacion time.Time `json:"fecha_creacion"`

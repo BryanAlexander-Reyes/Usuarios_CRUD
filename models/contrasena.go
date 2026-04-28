@@ -5,7 +5,7 @@ import (
 )
 
 type Contrasena struct{
-	ID int `json:"id_contrasena"` // campo id 
+	ID_contrasena int `json:"id_contrasena"` // campo id 
 	Contrasena string `json:"contrasena"`
 	Hash_contrasena string `json:"hash_contrasena"`
 	ID_usuario int `json:"id_usuario"`
