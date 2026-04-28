@@ -35,3 +35,23 @@ func GetALLDocuments(w http.ResponseWriter, r *http.Request) {
 	
 }
 
+//GET PARA userbyid
+
+func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+
+	var d models.documento
+
+	err := config.DB.QueryRow(
+		"ELECT id_documento, tipo_documento, activo, fecha _creacion FROM documento WHERE id = $1",
+		id,
+	).Scan(&d.ID_documento &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
+
+	if err == sql.ErrNoRows{
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 200, d)
+}
+
