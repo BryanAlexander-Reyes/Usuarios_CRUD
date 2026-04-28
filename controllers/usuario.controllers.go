@@ -55,3 +55,40 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, u)
 }
 
+// POST create nuevos datos
+
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+	var c models.usuario
+
+	json.NewDecoder(r.Body).Decode(&u)
+
+	err := config.DB.QueryRow(
+		"INSERT INTO usuario (nombre, apellido, numero_documento, email, telefono, fecha_necimiento, id_documento fecha_registro, activo) VALUES ($1, $2, $3, $4) RETURNING id",
+		c.Nombre, c.Apellido, c.Numero_documento, c.Email, c.Fecha_nacimineto, c.ID_documento, c.Fecha_registro, c.Activo,
+	).Scan(&c.ID)
+
+	if err != nil {
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 201, map[string]string{"Message": "Dato Creado"})
+}
+
+// UpdateUser actualizar usuario
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+
+	var u models.usuario
+	json.NewDecoder(r.Body).Decode(&u)
+
+	_, err := config.DB.Exec(
+		"UPDATE usuario SET telefono = $1, email = $2, activo = $3 WHERE id = $4",
+		u.Telefono, u.Email, u.Activo, id,
+	)
+	if err != nil {
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 200, map[string]string{"Message": "Dato Actualizado"})
+}
