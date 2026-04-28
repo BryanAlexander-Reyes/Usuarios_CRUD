@@ -4,7 +4,7 @@ import (
 	"Time"
 )
 
-type User struct{
+type Usuario struct{
 	ID_usuario int `json:"id_usuario"` // campo id 
 	Nombre string `json:"nombre"`
 	Apellido string `json:"apellido"`
