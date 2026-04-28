@@ -55,3 +55,22 @@ func GetContrasenaByID(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, c)
 }
 
+// POST create nuevos datos
+
+func CreateContrasena(w http.ResponseWriter, r *http.Request) {
+	var c models.contrasena
+
+	json.NewDecoder(r.Body).Decode(&c)
+
+	err := config.DB.QueryRow(
+		"INSERT INTO contrasena(id_usuario,contrasena, hash_contrasena) VALUES ($1, $2, $3) RETURNING id",
+		c.ID_usuario,c.Contrasena, c.Hash_contrasena,
+	).Scan(&c.ID)
+
+	if err != nil {
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 201, map[string]string{"Message": "Dato Creado"})
+}
+
