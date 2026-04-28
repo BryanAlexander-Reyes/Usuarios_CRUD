@@ -74,3 +74,22 @@ func CreateHistorial_acceso(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 201, map[string]string{"Message": "Dato Creado"})
 }
 
+// UpdateUser actualizar 
+func UpdateHistorial_acceso(w http.ResponseWriter, r *http.Request){
+		id:=mux.Vars(r)["id"]
+
+		var h models.historial_acceso
+		json.NewDecoder(r.Body).Decode(&h)
+
+		_, err := config.DB.Exec(
+			"UPDATE historial_acceso SET fecha_intento=$1,existoso=$2, ip_origen=$3, fallo_motivo=$4 id=$5",
+			h.Fecha_intento, h.Exitoso, h.Ip_origen, h.Fallo_motivo, h.Id_usuario, h.Id_contrasena, id,
+		)
+
+	if err!=nil {
+		respondJSON(w,500,map[string]string{"Error":err.Error()})
+		return
+	}
+	respondJSON(w,200,map[string]string{"Message":"Dato actualizado"})
+
+}
