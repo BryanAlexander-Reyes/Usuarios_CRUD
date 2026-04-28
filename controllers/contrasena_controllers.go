@@ -74,3 +74,22 @@ func CreateContrasena(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 201, map[string]string{"Message": "Dato Creado"})
 }
 
+// UpdateUser actualizar 
+func UpdateContrasena(w http.ResponseWriter, r *http.Request){
+		id:=mux.Vars(r)["id"]
+
+		var c models.contrasena
+		json.NewDecoder(r.Body).Decode(&c)
+
+		_, err := config.DB.Exec(
+			"UPDATE Contrasena SET contrasena id=$2",
+			c.Password, id,
+		)
+
+	if err!=nil {
+		respondJSON(w,500,map[string]string{"Error":err.Error()})
+		return
+	}
+	respondJSON(w,200,map[string]string{"Message":"Dato actualizado"})
+
+}
