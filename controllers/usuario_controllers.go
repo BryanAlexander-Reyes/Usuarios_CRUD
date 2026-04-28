@@ -98,7 +98,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	
-	_, err := config.DB.Exec("DELETE FROM users WHERE id = $1", id)
+	_, err := config.DB.Exec("DELETE FROM usuario WHERE id = $1", id)
 
 	if err != nil {
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
