@@ -92,3 +92,17 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	respondJSON(w, 200, map[string]string{"Message": "Dato Actualizado"})
 }
+
+// DeleteUser eliminar usuario
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+	
+	_, err := config.DB.Exec("DELETE FROM users WHERE id = $1", id)
+
+	if err != nil {
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 200, map[string]string{"Message": "Dato eliminado"})
+}
