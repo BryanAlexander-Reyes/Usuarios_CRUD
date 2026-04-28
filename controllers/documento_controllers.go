@@ -26,7 +26,7 @@ func GetALLDocuments(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var d models.documento
 
-		rows.Scan(&d.ID_documento &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
+		rows.Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
 		Documento = append(Documento, d)
 
 	}
@@ -35,7 +35,7 @@ func GetALLDocuments(w http.ResponseWriter, r *http.Request) {
 	
 }
 
-//GET PARA userbyid
+//GET PARA Documentsbyid
 
 func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -44,7 +44,7 @@ func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
 	var d models.documento
 
 	err := config.DB.QueryRow(
-		"ELECT id_documento, tipo_documento, activo, fecha _creacion FROM documento WHERE id = $1",
+		"SELECT id_documento, tipo_documento, activo, fecha _creacion FROM documento WHERE id = $1",
 		id,
 	).Scan(&d.ID_documento &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
 
@@ -74,7 +74,7 @@ func CreateDocuments(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 201, map[string]string{"Message": "Dato Creado"})
 }
 
-// UpdateUser actualizar usuario
+// UpdateUser actualizar 
 func UpdateDocumnts(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
@@ -92,7 +92,7 @@ func UpdateDocumnts(w http.ResponseWriter, r *http.Request) {
 	}
 	respondJSON(w, 200, map[string]string{"Message": "Dato Actualizado"})
 }
-// DeleteUser eliminar usuario
+// DeleteUser eliminar 
 func DeleteDocuments(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
