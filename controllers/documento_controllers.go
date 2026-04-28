@@ -55,3 +55,22 @@ func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, d)
 }
 
+// POST create nuevos datos
+
+func CreateDocuments(w http.ResponseWriter, r *http.Request) {
+	var c models.documento
+
+	json.NewDecoder(r.Body).Decode(&u)
+
+	err := config.DB.QueryRow(
+		"INSERT INTO documento (tipo_documento ) VALUES ($1) RETURNING id",
+		c.Tipo_documento,
+	).Scan(&c.ID)
+
+	if err != nil {
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 201, map[string]string{"Message": "Dato Creado"})
+}
+
