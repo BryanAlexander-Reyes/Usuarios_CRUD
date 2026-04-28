@@ -35,3 +35,23 @@ func GetALLContrasena(w http.ResponseWriter, r *http.Request) {
 	
 }
 
+//GET PARA contrasenabyid
+
+func GetContrasenaByID(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+
+	var c models.contrasena
+
+	err := config.DB.QueryRow(
+		"SELECT id_contrasena, contrasena, hash_contrasena, id_usuario, activo FROM contrasena WHERE id = $1",
+		id,
+	).Scan(&c.ID_contrasena, &c.Contrasena,&c.Hash_contrasena, &c.ID_usuario, &c.Activo)
+
+	if err == sql.ErrNoRows{
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 200, c)
+}
+
