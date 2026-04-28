@@ -55,3 +55,22 @@ func GetHistorial_accesoByID(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, h)
 }
 
+// POST create nuevos datos
+
+func CreateHistorial_acceso(w http.ResponseWriter, r *http.Request) {
+	var h models.historial_acceso
+
+	json.NewDecoder(r.Body).Decode(&h)
+
+	err := config.DB.QueryRow(
+		"INSERT INTO historial_acceso( fecha_intento, exitoso,ip_fallo, fallo_motivo, id_usuario, id_contraseña VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
+		h.Fecha_intento, h.Exitoso, h.Ip_origen, h.Fallo_motivo, h.Id_usuario, h.Id_contrasena,
+	).Scan(&h.ID)
+
+	if err != nil {
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 201, map[string]string{"Message": "Dato Creado"})
+}
+
