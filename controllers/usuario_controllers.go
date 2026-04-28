@@ -60,7 +60,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var c models.usuario
 
-	json.NewDecoder(r.Body).Decode(&u)
+	json.NewDecoder(r.Body).Decode(c)
 
 	err := config.DB.QueryRow(
 		"INSERT INTO usuario (nombre, apellido, numero_documento, email, telefono, fecha_necimiento, id_documento fecha_registro, activo) VALUES ($1, $2, $3, $4) RETURNING id",

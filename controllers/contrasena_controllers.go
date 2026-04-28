@@ -10,6 +10,13 @@ import (
 	"github.com/gorilla/mux" 
 )
 
+//Helper rspuesta JSON 
+func respondJSON(w http.ResponseWriter, status int, payload interface{}){
+	w.Header().Set("Content-type","application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(payload)
+}
+
 func GetALLContrasena(w http.ResponseWriter, r *http.Request) {
 	query := "SELECT id_contrasena, contrasena, hash_contrasena, id_usuario, activo FROM contrasena  WHERE 1=1"
 
@@ -27,7 +34,7 @@ func GetALLContrasena(w http.ResponseWriter, r *http.Request) {
 		var c models.contrasena
 
 		rows.Scan(&c.ID_contrasena, &c.Contrasena,&c.Hash_contrasena, &c.ID_usuario, &c.Activo)
-		Contrasena = append(Contrasena, d)
+		Contrasena = append(Contrasena, c)
 
 	}
 
