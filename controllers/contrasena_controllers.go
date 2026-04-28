@@ -93,3 +93,16 @@ func UpdateContrasena(w http.ResponseWriter, r *http.Request){
 	respondJSON(w,200,map[string]string{"Message":"Dato actualizado"})
 
 }
+// DeleteUser eliminar 
+func DeleteContrasena(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+	
+	_, err := config.DB.Exec("DELETE FROM contrasena WHERE id = $1", id)
+
+	if err != nil {
+		respondJSON(w, 500,map[string]string{"Error":"Error"})
+		return
+	}
+	respondJSON(w, 200, map[string]string{"Message": "Dato eliminado"})
+}
