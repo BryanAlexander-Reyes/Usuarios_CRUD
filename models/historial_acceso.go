@@ -1,7 +1,7 @@
 package models
 
 import ( 
-	"Time"
+	"time"
 )
 
 type Historial_acceso struct{
