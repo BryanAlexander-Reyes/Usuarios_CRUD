@@ -43,7 +43,7 @@ func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
 	var d models.Documento
 
 	err := config.DB.QueryRow(
-		"SELECT id_documento, tipo_documento, activo, fecha _creacion FROM documento WHERE id = $1",
+		"SELECT id_documento, tipo_documento, activo, fecha _creacion FROM documento WHERE id_documento = $1",
 		id,
 	).Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
 

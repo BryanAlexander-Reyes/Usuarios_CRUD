@@ -43,7 +43,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	var u models.Usuario
 
 	err := config.DB.QueryRow(
-		"SELECT id_usuario, nombre, apellido, numero_documento, email, telefono, fecha_nacimiento,id_documento, fecha_registro, activo FROM usuario WHERE id = $1",
+		"SELECT id_usuario, nombre, apellido, numero_documento, email, telefono, fecha_nacimiento,id_documento, fecha_registro, activo FROM usuario WHERE id_usuario = $1",
 		id,
 	).Scan(&u.ID_usuario, &u.Nombre, &u.Apellido, &u.Numero_documento, &u.Email, &u.Telefono, &u.Fecha_nacimiento, &u.ID_documento, &u.Fecha_registro, &u.Activo)
 

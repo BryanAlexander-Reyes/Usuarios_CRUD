@@ -50,7 +50,7 @@ func GetContrasenaByID(w http.ResponseWriter, r *http.Request) {
 	var c models.Contrasena
 
 	err := config.DB.QueryRow(
-		"SELECT id_contrasena, contrasena, hash_contrasena, id_usuario, activo FROM contrasena WHERE id = $1",
+		"SELECT id_contrasena, contrasena, hash_contrasena, id_usuario, activo FROM contrasena WHERE id_contrasena = $1",
 		id,
 	).Scan(&c.ID_contrasena, &c.Contrasena,&c.Hash_contrasena, &c.ID_usuario, &c.Activo)
 
