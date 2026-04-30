@@ -69,8 +69,8 @@ func CreateContrasena(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&c)
 
 	err := config.DB.QueryRow(
-		"INSERT INTO contrasena(id_usuario,contrasena, hash_contrasena) VALUES ($1, $2, $3) RETURNING id",
-		c.ID_usuario,c.Contrasena, c.Hash_contrasena,
+		"INSERT INTO contrasena(contrasena, hash_contrasena, id_usuario) VALUES ($1, $2, $3) RETURNING id_contrasena",
+		c.Contrasena, c.Hash_contrasena,c.ID_usuario,
 	).Scan(&c.ID_contrasena)
 
 	if err != nil {

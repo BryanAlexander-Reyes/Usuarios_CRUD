@@ -7,7 +7,7 @@ import (
 
 //Registro de ruutas para la tabla usuario
 
-func RegisterHistorial_accesoRouetes (r*mux.Router){
+func RegisterHistorial_accesoRoutes(r*mux.Router){
 	r.HandleFunc("/access", controllers.GetALLHistorial_acceso).Methods("GET")
 	r.HandleFunc("/access/{id}", controllers.GetHistorial_accesoByID).Methods("GET")
 	r.HandleFunc("/access", controllers.CreateHistorial_acceso).Methods("POST")

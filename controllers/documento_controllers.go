@@ -10,7 +10,7 @@ import (
 )
 
 func GetALLDocuments(w http.ResponseWriter, r *http.Request) {
-	query := "SELECT id_documento, tipo_documento, activo, fecha _creacion FROM documento  WHERE 1=1"
+	query := "SELECT id_documento, tipo_documento, activo, fecha_creacion, fecha_modificacion FROM documento  WHERE 1=1"
 
 	rows, err := config.DB.Query(query)
 	if err != nil {
@@ -25,7 +25,7 @@ func GetALLDocuments(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var d models.Documento
 
-		rows.Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
+		rows.Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion, &d.Fecha_modificacion)
 		Documento = append(Documento, d)
 
 	}
@@ -43,9 +43,9 @@ func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
 	var d models.Documento
 
 	err := config.DB.QueryRow(
-		"SELECT id_documento, tipo_documento, activo, fecha _creacion FROM documento WHERE id_documento = $1",
+		"SELECT id_documento, tipo_documento, activo, fecha_creacion, fecha_modificacion  FROM documento WHERE id_documento = $1",
 		id,
-	).Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
+	).Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion, &d.Fecha_modificacion)
 
 	if err != nil{
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
@@ -62,7 +62,7 @@ func CreateDocuments(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&c)
 
 	err := config.DB.QueryRow(
-		"INSERT INTO documento (tipo_documento ) VALUES ($1) RETURNING id",
+		"INSERT INTO documento (tipo_documento ) VALUES ($1) RETURNING id_documento",
 		c.Tipo_documento,
 	).Scan(&c.ID_documento)
 

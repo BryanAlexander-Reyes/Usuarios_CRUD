@@ -10,7 +10,7 @@ import (
 )
 
 func GetALLHistorial_acceso(w http.ResponseWriter, r *http.Request) {
-	query := "SELECT id_historial_acceso, fecha_intento, exitoso,ip_fallo, fallo_motivo, id_usuario, id_contraseña, activo FROM historial_acceso  WHERE 1=1"
+	query := "SELECT id_historial_acceso, fecha_intento, exitoso,ip_origen, fallo_motivo, id_usuario, id_contrasena, activo FROM historial_acceso  WHERE 1=1"
 
 	rows, err := config.DB.Query(query)
 	if err != nil {
@@ -43,7 +43,7 @@ func GetHistorial_accesoByID(w http.ResponseWriter, r *http.Request) {
 	var h models.Historial_acceso
 
 	err := config.DB.QueryRow(
-		"SELECT id_historial_acceso, fecha_intento, exitoso,ip_fallo, fallo_motivo, id_usuario, id_contraseña, activo FROM historial_acceso WHERE id_historial_acceso = $1",
+		"SELECT id_historial_acceso, fecha_intento, exitoso,ip_origen, fallo_motivo, id_usuario, id_contrasena, activo FROM historial_acceso WHERE id_historial_acceso = $1",
 		id,
 	).Scan(&h.Id_historial_acceso, &h.Fecha_intento,&h.Exitoso,&h.Ip_origen,&h.Fallo_motivo, &h.Id_usuario, &h.Id_contrasena, &h.Activo)
 
@@ -62,7 +62,7 @@ func CreateHistorial_acceso(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&h)
 
 	err := config.DB.QueryRow(
-		"INSERT INTO historial_acceso( fecha_intento, exitoso,ip_fallo, fallo_motivo, id_usuario, id_contraseña VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
+		"INSERT INTO historial_acceso( fecha_intento, exitoso,ip_origen, fallo_motivo, id_usuario, id_contrasena )VALUES ($1, $2, $3, $4, $5, $6) RETURNING id_historial_acceso",
 		h.Fecha_intento, h.Exitoso, h.Ip_origen, h.Fallo_motivo, h.Id_usuario, h.Id_contrasena,
 	).Scan(&h.Id_historial_acceso)
 

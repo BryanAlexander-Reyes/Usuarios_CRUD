@@ -35,7 +35,7 @@ func main(){
 	routes.RegisterUserRoutes(r)
 	routes.RegisterContrasenaRoutes(r)
 	routes.RegisterDocumentoRoutes(r)
-	routes.RegisterHistorial_accesoRouetes(r)
+	routes.RegisterHistorial_accesoRoutes(r)
 	
 
 	// Rutas de la api

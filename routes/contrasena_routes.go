@@ -8,9 +8,9 @@ import (
 //Registro de ruutas para la tabla usuario
 
 func RegisterContrasenaRoutes(r *mux.Router){
-	r.HandleFunc("/password", controllers.GetALLUsuario).Methods("GET")
-	r.HandleFunc("/password/{id}", controllers.GetUserByID).Methods("GET")
-	r.HandleFunc("/password", controllers.CreateUser).Methods("POST")
-	r.HandleFunc("/password/{id}", controllers.UpdateUser).Methods("PUT")
-	r.HandleFunc("/password/{id}", controllers.DeleteUser).Methods("DELETE")
+	r.HandleFunc("/password", controllers.GetALLContrasena).Methods("GET")
+	r.HandleFunc("/password/{id}", controllers.GetContrasenaByID).Methods("GET")
+	r.HandleFunc("/password", controllers.CreateContrasena).Methods("POST")
+	r.HandleFunc("/password/{id}", controllers.UpdateContrasena).Methods("PUT")
+	r.HandleFunc("/password/{id}", controllers.DeleteContrasena).Methods("DELETE")
 }

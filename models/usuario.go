@@ -13,7 +13,7 @@ type Usuario struct{
 	Telefono int `json:"telefono"`
 	Fecha_nacimiento time.Time `json:"fecha_nacimiento"`
 	ID_documento int `json:"id_documento"`
-	Fecha_registro string `json:"fecha_registro"`
+	Fecha_registro time.Time `json:"fecha_registro"`
 	Activo bool `json:"activo"`
 	Fecha_creacion time.Time `json:"fecha_creacion"`
 	Fecha_modificacion time.Time `json:"fecha_modificacion"`
