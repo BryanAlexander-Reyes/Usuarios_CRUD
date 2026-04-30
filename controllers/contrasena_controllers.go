@@ -3,7 +3,6 @@ package controllers
 import (
 	"Usuarios_CRUD/models"
 	"Usuarios_CRUD/config"
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
@@ -55,7 +54,7 @@ func GetContrasenaByID(w http.ResponseWriter, r *http.Request) {
 		id,
 	).Scan(&c.ID_contrasena, &c.Contrasena,&c.Hash_contrasena, &c.ID_usuario, &c.Activo)
 
-	if err == sql.ErrNoRows{
+	if err != nil{
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
 		return
 	}

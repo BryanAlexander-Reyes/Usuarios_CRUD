@@ -3,7 +3,6 @@ package controllers
 import (
 	"Usuarios_CRUD/models"
 	"Usuarios_CRUD/config"
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
@@ -48,7 +47,7 @@ func GetHistorial_accesoByID(w http.ResponseWriter, r *http.Request) {
 		id,
 	).Scan(&h.Id_historial_acceso, &h.Fecha_intento,&h.Exitoso,&h.Ip_origen,&h.Fallo_motivo, &h.Id_usuario, &h.Id_contrasena, &h.Activo)
 
-	if err == sql.ErrNoRows{
+	if err != nil{
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
 		return
 	}

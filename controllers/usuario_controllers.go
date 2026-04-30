@@ -3,7 +3,6 @@ package controllers
 import (
 	"Usuarios_CRUD/models"
 	"Usuarios_CRUD/config"
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
@@ -48,7 +47,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 		id,
 	).Scan(&u.ID_usuario, &u.Nombre, &u.Apellido, &u.Numero_documento, &u.Email, &u.Telefono, &u.Fecha_nacimiento, &u.ID_documento, &u.Fecha_registro, &u.Activo)
 
-	if err == sql.ErrNoRows{
+	if err != nil{
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
 		return
 	}

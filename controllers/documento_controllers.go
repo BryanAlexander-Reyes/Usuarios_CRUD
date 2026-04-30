@@ -3,7 +3,6 @@ package controllers
 import (
 	"Usuarios_CRUD/models"
 	"Usuarios_CRUD/config"
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
@@ -48,7 +47,7 @@ func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
 		id,
 	).Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
 
-	if err == sql.ErrNoRows{
+	if err != nil{
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
 		return
 	}
