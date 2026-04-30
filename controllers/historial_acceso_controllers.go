@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"API_GO_CRUD/models"
-	"API_GO_CRUD/config"
+	"Usuarios_CRUD/models"
+	"Usuarios_CRUD/config"
 	"database/sql"
 	"encoding/json"
 	"net/http"
@@ -21,12 +21,12 @@ func GetALLHistorial_acceso(w http.ResponseWriter, r *http.Request) {
 
 	defer rows.Close()
 
-	var Historial_acceso []models.historial_acceso
+	var Historial_acceso []models.Historial_acceso
 
 	for rows.Next() {
-		var h models.historial_acceso
+		var h models.Historial_acceso
 
-		rows.Scan(&h.ID_historial_acceso, &h.Fecha_intento,&h.Exitoso,&h.Ip_origen,&h.Fallo_motivo, &h.ID_usuario,&h.Id_contrasena &h.Activo)
+		rows.Scan(&h.Id_historial_acceso, &h.Fecha_intento,&h.Exitoso,&h.Ip_origen,&h.Fallo_motivo, &h.Id_usuario,&h.Id_contrasena, &h.Activo)
 		Historial_acceso = append(Historial_acceso, h)
 
 	}
@@ -41,12 +41,12 @@ func GetHistorial_accesoByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 
-	var h models.historial_acceso
+	var h models.Historial_acceso
 
 	err := config.DB.QueryRow(
 		"SELECT id_historial_acceso, fecha_intento, exitoso,ip_fallo, fallo_motivo, id_usuario, id_contraseña, activo FROM historial_acceso WHERE id = $1",
 		id,
-	).Scan(&h.ID_historial_acceso, &h.Fecha_intento,&h.Exitoso,&h.Ip_origen,&h.Fallo_motivo, &h.ID_usuario,&h.Id_contrasena &h.Activo)
+	).Scan(&h.Id_historial_acceso, &h.Fecha_intento,&h.Exitoso,&h.Ip_origen,&h.Fallo_motivo, &h.Id_usuario, &h.Id_contrasena, &h.Activo)
 
 	if err == sql.ErrNoRows{
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
@@ -58,14 +58,14 @@ func GetHistorial_accesoByID(w http.ResponseWriter, r *http.Request) {
 // POST create nuevos datos
 
 func CreateHistorial_acceso(w http.ResponseWriter, r *http.Request) {
-	var h models.historial_acceso
+	var h models.Historial_acceso
 
 	json.NewDecoder(r.Body).Decode(&h)
 
 	err := config.DB.QueryRow(
 		"INSERT INTO historial_acceso( fecha_intento, exitoso,ip_fallo, fallo_motivo, id_usuario, id_contraseña VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
 		h.Fecha_intento, h.Exitoso, h.Ip_origen, h.Fallo_motivo, h.Id_usuario, h.Id_contrasena,
-	).Scan(&h.ID)
+	).Scan(&h.Id_historial_acceso)
 
 	if err != nil {
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
@@ -78,7 +78,7 @@ func CreateHistorial_acceso(w http.ResponseWriter, r *http.Request) {
 func UpdateHistorial_acceso(w http.ResponseWriter, r *http.Request){
 		id:=mux.Vars(r)["id"]
 
-		var h models.historial_acceso
+		var h models.Historial_acceso
 		json.NewDecoder(r.Body).Decode(&h)
 
 		_, err := config.DB.Exec(

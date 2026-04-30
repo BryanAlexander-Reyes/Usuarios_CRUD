@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"API_GO_CRUD/models"
-	"API_GO_CRUD/config"
+	"Usuarios_CRUD/models"
+	"Usuarios_CRUD/config"
 	"database/sql"
 	"encoding/json"
 	"net/http"
@@ -24,7 +24,7 @@ func GetALLUsuario(w http.ResponseWriter, r *http.Request) {
 	var Usuario []models.Usuario
 
 	for rows.Next() {
-		var u models.usuario
+		var u models.Usuario
 
 		rows.Scan(&u.ID_usuario, &u.Nombre, &u.Apellido, &u.Numero_documento, &u.Email, &u.Telefono, &u.Fecha_nacimiento, &u.ID_documento, &u.Fecha_registro, &u.Activo)
 		Usuario = append(Usuario, u)
@@ -41,7 +41,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 
-	var u models.usuario
+	var u models.Usuario
 
 	err := config.DB.QueryRow(
 		"SELECT id_usuario, nombre, apellido, numero_documento, email, telefono, fecha_nacimiento,id_documento, fecha_registro, activo FROM usuario WHERE id = $1",
@@ -58,14 +58,14 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 // POST create nuevos datos
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	var c models.usuario
+	var c models.Usuario
 
 	json.NewDecoder(r.Body).Decode(c)
 
 	err := config.DB.QueryRow(
 		"INSERT INTO usuario (nombre, apellido, numero_documento, email, telefono, fecha_necimiento, id_documento fecha_registro, activo) VALUES ($1, $2, $3, $4) RETURNING id",
-		c.Nombre, c.Apellido, c.Numero_documento, c.Email, c.Fecha_nacimineto, c.ID_documento, c.Fecha_registro, c.Activo,
-	).Scan(&c.ID)
+		c.Nombre, c.Apellido, c.Numero_documento, c.Email, c.Fecha_nacimiento, c.ID_documento, c.Fecha_registro, c.Activo,
+	).Scan(&c.ID_usuario)
 
 	if err != nil {
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
@@ -79,7 +79,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 
-	var u models.usuario
+	var u models.Usuario
 	json.NewDecoder(r.Body).Decode(&u)
 
 	_, err := config.DB.Exec(

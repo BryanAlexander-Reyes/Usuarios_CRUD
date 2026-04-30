@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"API_GO_CRUD/models"
-	"API_GO_CRUD/config"
+	"Usuarios_CRUD/models"
+	"Usuarios_CRUD/config"
 	"database/sql"
 	"encoding/json"
 	"net/http"
@@ -21,10 +21,10 @@ func GetALLDocuments(w http.ResponseWriter, r *http.Request) {
 
 	defer rows.Close()
 
-	var Documento []models.documento
+	var Documento []models.Documento
 
 	for rows.Next() {
-		var d models.documento
+		var d models.Documento
 
 		rows.Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
 		Documento = append(Documento, d)
@@ -41,12 +41,12 @@ func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 
-	var d models.documento
+	var d models.Documento
 
 	err := config.DB.QueryRow(
 		"SELECT id_documento, tipo_documento, activo, fecha _creacion FROM documento WHERE id = $1",
 		id,
-	).Scan(&d.ID_documento &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
+	).Scan(&d.ID_documento, &d.Tipo_documento,&d.Activo,&d.Fecha_creacion)
 
 	if err == sql.ErrNoRows{
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
@@ -58,14 +58,14 @@ func GetDocumentsByID(w http.ResponseWriter, r *http.Request) {
 // POST create nuevos datos
 
 func CreateDocuments(w http.ResponseWriter, r *http.Request) {
-	var c models.documento
+	var c models.Documento
 
 	json.NewDecoder(r.Body).Decode(&c)
 
 	err := config.DB.QueryRow(
 		"INSERT INTO documento (tipo_documento ) VALUES ($1) RETURNING id",
 		c.Tipo_documento,
-	).Scan(&c.ID)
+	).Scan(&c.ID_documento)
 
 	if err != nil {
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
@@ -79,7 +79,7 @@ func UpdateDocumnts(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 
-	var d models.documento
+	var d models.Documento
 	json.NewDecoder(r.Body).Decode(&d)
 
 	_, err := config.DB.Exec(
