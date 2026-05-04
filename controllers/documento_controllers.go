@@ -82,7 +82,7 @@ func UpdateDocumnts(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&d)
 
 	_, err := config.DB.Exec(
-		"UPDATE documento SET  tipo_documento= $1, activo = $2 WHERE id = $3",
+		"UPDATE documento SET  tipo_documento= $1, activo = $2 WHERE id_documento = $3",
 		d.Tipo_documento, d.Activo, id,
 	)
 	if err != nil {
@@ -96,7 +96,7 @@ func DeleteDocuments(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	
-	_, err := config.DB.Exec("DELETE FROM documento WHERE id = $1", id)
+	_, err := config.DB.Exec("DELETE FROM documento WHERE id_documento = $1", id)
 
 	if err != nil {
 		respondJSON(w, 500,map[string]string{"Error":"Error"})

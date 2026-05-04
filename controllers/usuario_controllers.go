@@ -5,7 +5,6 @@ import (
 	"Usuarios_CRUD/config"
 	"encoding/json"
 	"net/http"
-
 	"github.com/gorilla/mux" 
 )
 
@@ -76,14 +75,14 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 // UpdateUser actualizar usuario
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	id := params["id"]
+	id:= params["id"]
 
 	var u models.Usuario
 	json.NewDecoder(r.Body).Decode(&u)
 
 	_, err := config.DB.Exec(
-		"UPDATE usuario SET telefono = $1, email = $2, activo = $3 WHERE id = $4",
-		u.Telefono, u.Email, u.Activo, id,
+		"UPDATE usuario SET email= $1, telefono  = $2, activo = $3 WHERE id_usuario = $4",
+		u.Email, u.Telefono, u.Activo, id,
 	)
 	if err != nil {
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
@@ -97,7 +96,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	
-	_, err := config.DB.Exec("DELETE FROM usuario WHERE id = $1", id)
+	_, err := config.DB.Exec("DELETE FROM usuario WHERE id_usuario = $1", id)
 
 	if err != nil {
 		respondJSON(w, 500,map[string]string{"Error":"Error"})

@@ -88,7 +88,7 @@ func UpdateContrasena(w http.ResponseWriter, r *http.Request){
 		json.NewDecoder(r.Body).Decode(&c)
 
 		_, err := config.DB.Exec(
-			"UPDATE Contrasena SET contrasena id=$2",
+			"UPDATE Contrasena SET contrasena =$1 WHERE id_contrasena=$2",
 			c.Contrasena, id,
 		)
 
@@ -104,7 +104,7 @@ func DeleteContrasena(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	
-	_, err := config.DB.Exec("DELETE FROM contrasena WHERE id = $1", id)
+	_, err := config.DB.Exec("DELETE FROM contrasena WHERE id_contrasena = $1", id)
 
 	if err != nil {
 		respondJSON(w, 500,map[string]string{"Error":"Error"})
