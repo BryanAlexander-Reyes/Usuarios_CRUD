@@ -62,8 +62,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&c)
 
 	err := config.DB.QueryRow(
-		"INSERT INTO usuario (nombre, apellido, numero_documento, email, telefono, fecha_nacimiento, id_documento, fecha_registro, activo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id_usuario",
-		c.Nombre, c.Apellido, c.Numero_documento, c.Email, c.Telefono, c.Fecha_nacimiento, c.ID_documento, c.Fecha_registro, c.Activo,
+		"INSERT INTO usuario (nombre, apellido, numero_documento, email, telefono, fecha_nacimiento, id_documento, fecha_registro) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id_usuario",
+		c.Nombre, c.Apellido, c.Numero_documento, c.Email, c.Telefono, c.Fecha_nacimiento, c.ID_documento, c.Fecha_registro, 
 	).Scan(&c.ID_usuario)
 
 	if err != nil {
